@@ -1,38 +1,13 @@
 #BEGIN CONFIG INFO
-#DESCR: 4GB RAM, InnoDB only, ACID, few connections, heavy queries
+#DESCR: For Riken Server, InnoDB only, ACID, few connections, heavy queries
 #TYPE: SYSTEM
 #END CONFIG INFO
 
-#
-# This is a MySQL example config file for systems with 4GB of memory
-# running mostly MySQL using InnoDB only tables and performing complex
-# queries with few connections.
-# 
-# MySQL programs look for option files in a set of
-# locations which depend on the deployment platform.
-# You can copy this option file to one of those
-# locations. For information about these locations, see:
-# http://dev.mysql.com/doc/mysql/en/option-files.html
-#
-# In this file, you can use all long options that a program supports.
-# If you want to know which options a program supports, run the program
-# with the "--help" option.
-#
-# More detailed information about the individual options can also be
-# found in the manual.
-#
-
-#
-# The following options will be read by MySQL client applications.
-# Note that only client applications shipped by MySQL are guaranteed
-# to read this section. If you want your own MySQL client program to
-# honor these values, you need to specify it as an option during the
-# MySQL client library initialization.
-#
 [client]
 #password	= [your_password]
 port		= 3306
 socket		= /var/run/mysqld/mysqld.sock
+default-character-set = utf8
 
 # *** Application-specific options follow here ***
 
@@ -44,6 +19,12 @@ socket		= /var/run/mysqld/mysqld.sock
 # generic configuration options
 port		= 3306
 socket		= /var/run/mysqld/mysqld.sock
+
+character-set-server = utf8
+collation-serve      = utf8_general_ci
+skip-character-set-client-handshake
+
+init_connect = 'set collation_connection = utf8_general_ci;'
 
 # back_log is the number of connections the operating system can keep in
 # the listen queue, before the MySQL connection manager thread has
@@ -103,7 +84,7 @@ max_allowed_packet = 16M
 # transaction is larger than this value, temporary file on disk is used
 # instead.  This buffer is allocated per connection on first update
 # statement in transaction
-binlog_cache_size = 1M
+# binlog_cache_size = 1M
 
 # Maximum allowed size for a single HEAP (in memory) table. This option
 # is a protection against the accidential creation of a very large HEAP
@@ -200,10 +181,10 @@ tmp_table_size = 64M
 # Enable binary logging. This is required for acting as a MASTER in a
 # replication configuration. You also need the binary log if you need
 # the ability to do point in time recovery from your latest backup.
-log-bin=mysql-bin
+# log-bin=mysql-bin
 
 # binary logging format - mixed recommended
-binlog_format=mixed
+# binlog_format=mixed
 
 # If you're using replication with chained slaves (A->B->C), you need to
 # enable this option on server B. It enables logging of updates done by
@@ -236,10 +217,7 @@ long_query_time = 2
 
 # *** INNODB Specific options ***
 
-# Use this option if you have a MySQL server with InnoDB support enabled
-# but you do not plan to use it. This will save memory and disk space
-# and speed up some things.
-#skip-innodb
+skip-innodb-doublewrite
 
 # Additional memory pool that is used by InnoDB to store metadata
 # information.  If InnoDB requires more memory for this purpose it will
