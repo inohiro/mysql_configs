@@ -33,6 +33,7 @@
 #password	= [your_password]
 port		= 3306
 socket		= /tmp/mysql.sock
+default-character-set = utf8
 
 # *** Application-specific options follow here ***
 
@@ -40,11 +41,16 @@ socket		= /tmp/mysql.sock
 # The MySQL server
 #
 [mysqld]
-character-set-server=utf8
 
 # generic configuration options
 port		= 3306
 socket		= /tmp/mysql.sock
+
+character-set-server = utf8
+skip-character-set-client-handshake
+collation-serve      = utf8_general_ci
+
+init_connect = 'set collation_connection = utf8_general_ci;'
 
 # back_log is the number of connections the operating system can keep in
 # the listen queue, before the MySQL connection manager thread has
@@ -240,10 +246,7 @@ long_query_time = 2
 
 # *** INNODB Specific options ***
 
-# Use this option if you have a MySQL server with InnoDB support enabled
-# but you do not plan to use it. This will save memory and disk space
-# and speed up some things.
-#skip-innodb
+skip-innodb-doublewrite
 
 # Additional memory pool that is used by InnoDB to store metadata
 # information.  If InnoDB requires more memory for this purpose it will
